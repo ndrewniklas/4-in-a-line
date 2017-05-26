@@ -5,15 +5,19 @@
 #include <string>
 #include <iostream>
 
+#include "UserInterface.h"
 #include "Board.h"
 
 
 int main()
 {
+	UserInterface ui;
 	Board game;
+	char result = ui.welcome();
 	std::cout << game;
 
-	//system("pause");
+	//ui.exit();
+	system("pause");
     return 0;
 }
 

@@ -1,6 +1,8 @@
 
 #include "Board.h"
 
+
+
 Board::Board () {
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < cols; c++) {
@@ -42,8 +44,20 @@ std::string Board::print () const {
 }
 
 bool Board::setPiece (int x, int y, char piece) {
-	if (board[x][y] == empty) {
-		board[x][y] = piece;
+	if (checkBounds(x, y)) {
+		if (board[x][y] == empty) {
+			board[x][y] = piece;
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+bool Board::setPiece (char x, int y, char piece) {
+	int ix = toupper(x) - 65;
+	if (checkBounds(ix, y)) {
+		board[ix][y] = piece;
 		return true;
 	} else {
 		return false;
@@ -51,9 +65,31 @@ bool Board::setPiece (int x, int y, char piece) {
 }
 
 char Board::getPiece (int x, int y) {
-	return board[x][y];
+	if (checkBounds(x, y)) {
+		return board[x][y];
+	} else {
+		return 0;
+	}
 }
 
+char Board::getPiece(char x, int y) {
+	int ix = toupper(x) - 65;
+	if (checkBounds(ix, y)) {
+		return board[ix][y];
+	} else {
+		return 0;
+	}
+}
+
+bool Board::checkBounds(int x, int y) const {
+	if (x > rows || y > cols) {
+		return false;
+	} else if (x < 0 || y < 0) {
+		return false;
+	} else {
+		return true;
+	}
+}
 
 Board::~Board () {
 	if(board != nullptr){

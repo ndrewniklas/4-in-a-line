@@ -12,6 +12,8 @@ private:
 	int rows = 8;
 	int cols = 8;
 	char board[8][8];
+
+	bool checkBounds(int x, int y)const;
 public:
 
 	Board ();
@@ -21,7 +23,9 @@ public:
 	int getSize () const;
 	std::string print ()const;
 	bool setPiece(int x, int y, char piece);
+	bool setPiece (char x, int y, char piece);
 	char getPiece (int x, int y);
+	char getPiece (char x, int y);
 };
 
 std::ostream& operator<<(std::ostream& os, const Board& c);
