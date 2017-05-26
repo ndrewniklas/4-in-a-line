@@ -28,8 +28,9 @@ std::string Board::print () const {
 		if (i == 0) {
 			char label = 'A';
 			for (int i = 0; i < cols; i++) {
-				s << " " << label + i;
+				s << " " << (char)label + i;
 			}
+			s << "\n";
 		}
 		for(int j = 0; j < cols; ++j){
 			if (j == 0) {
@@ -48,7 +49,6 @@ Board::~Board () {
 		for(int i = 0; i < rows; ++i){
 			delete [] board[i];
 		}
-		delete [] board;
 		//board = nullptr;
 	}
 	rows = 0;

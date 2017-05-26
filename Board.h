@@ -4,12 +4,14 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 class Board {
 private:
 	int rows = 8;
 	int cols = 8;
 	char board[8][8];
+	//std::vector<std::vector<char>> board;
 public:
 
 	Board ();
