@@ -1,7 +1,6 @@
 
 #include "Board.h"
 
-
 Board::Board () {
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < cols; c++) {
@@ -24,18 +23,17 @@ int Board::getSize () const {
 
 std::string Board::print () const {
 	std::stringstream s;
-	for(int i = 0; i < rows+1; ++i){
+	for(int i = 0; i < rows; ++i){
 		if (i == 0) {
 			char label = 'A';
+			s << " ";
 			for (int i = 0; i < cols; i++) {
-				s << " " << (char)label + i;
+				s << " " << (char)(label + i);
 			}
 			s << "\n";
 		}
+		s << i + 1 << " ";
 		for(int j = 0; j < cols; ++j){
-			if (j == 0) {
-				s << j + 1;
-			}
 			s << board[i][j] << " ";
 		}
 		s << "\n";
@@ -46,13 +44,8 @@ std::string Board::print () const {
 
 Board::~Board () {
 	if(board != nullptr){
-		for(int i = 0; i < rows; ++i){
-			delete [] board[i];
-		}
-		//board = nullptr;
+		delete[] board;
 	}
-	rows = 0;
-	cols = 0;
 }
 
 std::ostream & operator<<(std::ostream & os, const Board & c) {
