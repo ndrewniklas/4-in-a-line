@@ -20,6 +20,8 @@ public:
 
 	int getSize () const;
 	std::string print ()const;
+	bool setPiece (int x, int y);
+	char getPiece (int x, int y);
 };
 
 std::ostream& operator<<(std::ostream& os, const Board& c);

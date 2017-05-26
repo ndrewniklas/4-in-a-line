@@ -13,7 +13,7 @@ int main()
 	Board game;
 	std::cout << game;
 
-	system("pause");
+	//system("pause");
     return 0;
 }
 

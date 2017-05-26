@@ -24,21 +24,27 @@ int Board::getSize () const {
 std::string Board::print () const {
 	std::stringstream s;
 	for(int i = 0; i < rows; ++i){
+		char label = 'A';
 		if (i == 0) {
-			char label = 'A';
 			s << " ";
 			for (int i = 0; i < cols; i++) {
-				s << " " << (char)(label + i);
+				s << " " << i + 1;
 			}
 			s << "\n";
 		}
-		s << i + 1 << " ";
+				s << (char)(label + i) << " " ;
 		for(int j = 0; j < cols; ++j){
 			s << board[i][j] << " ";
 		}
 		s << "\n";
 	}
 	return s.str();
+}
+
+bool Board::setPiece (int x, int y, char piece) {
+	if (board[x][y] == "-") {
+
+	}
 }
 
 
