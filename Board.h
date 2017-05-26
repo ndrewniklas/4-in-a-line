@@ -8,10 +8,10 @@
 
 class Board {
 private:
+	char empty = '-';
 	int rows = 8;
 	int cols = 8;
 	char board[8][8];
-	//std::vector<std::vector<char>> board;
 public:
 
 	Board ();
@@ -20,7 +20,7 @@ public:
 
 	int getSize () const;
 	std::string print ()const;
-	bool setPiece (int x, int y);
+	bool setPiece(int x, int y, char piece);
 	char getPiece (int x, int y);
 };
 

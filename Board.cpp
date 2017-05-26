@@ -42,9 +42,16 @@ std::string Board::print () const {
 }
 
 bool Board::setPiece (int x, int y, char piece) {
-	if (board[x][y] == "-") {
-
+	if (board[x][y] == empty) {
+		board[x][y] = piece;
+		return true;
+	} else {
+		return false;
 	}
+}
+
+char Board::getPiece (int x, int y) {
+	return board[x][y];
 }
 
 
