@@ -10,8 +10,10 @@
 
 int main()
 {
-	Board game();
+	Board game;
 	std::cout << game;
+
+	system("pause");
     return 0;
 }
 

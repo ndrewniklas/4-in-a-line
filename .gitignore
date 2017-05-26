@@ -1,5 +1,6 @@
 
-.vs/4-in-a-Line/v15/.suo
+.vs/*
+x64/*
 *.db
 *.opendb
 *.sqlite
@@ -7,3 +8,4 @@
 *.sln
 *.vcxproj
 *.filters
+*.ipch

@@ -54,3 +54,8 @@ Board::~Board () {
 	rows = 0;
 	cols = 0;
 }
+
+std::ostream & operator<<(std::ostream & os, const Board & c) {
+	os << c.print();
+	return os;
+}
