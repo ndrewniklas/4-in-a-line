@@ -1,0 +1,9 @@
+
+.vs/4-in-a-Line/v15/.suo
+*.db
+*.opendb
+*.sqlite
+*.json
+*.sln
+*.vcxproj
+*.filters
