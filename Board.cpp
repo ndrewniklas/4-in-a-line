@@ -64,7 +64,7 @@ bool Board::setPiece (char x, int y, char piece) {
 	}
 }
 
-char Board::getPiece (int x, int y) {
+char Board::getPiece(int x, int y) {
 	if (checkBounds(x, y)) {
 		return board[x][y];
 	} else {
@@ -90,7 +90,6 @@ bool Board::checkBounds(int x, int y) const {
 		return true;
 	}
 }
-
 Board::~Board () {
 	if(board != nullptr){
 		delete[] board;

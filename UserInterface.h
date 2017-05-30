@@ -4,8 +4,9 @@
 class UserInterface {
 public:
 	UserInterface();
+	~UserInterface();
+
 	char welcome();
 	int exit();
-	~UserInterface();
 };
 
