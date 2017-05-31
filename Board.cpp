@@ -56,7 +56,8 @@ bool Board::setPiece (int x, int y, char piece) {
 
 bool Board::setPiece (char x, int y, char piece) {
 	int ix = toupper(x) - 65;
-	if (checkBounds(ix, y)) {
+	y -= 1;
+	if (checkBounds(ix, y) && board[ix][y] == '-') {
 		board[ix][y] = piece;
 		return true;
 	} else {
@@ -82,7 +83,7 @@ char Board::getPiece(char x, int y) {
 }
 
 bool Board::checkBounds(int x, int y) const {
-	if (x > rows || y > cols) {
+	if (x >= rows || y >= cols) {
 		return false;
 	} else if (x < 0 || y < 0) {
 		return false;
@@ -90,6 +91,68 @@ bool Board::checkBounds(int x, int y) const {
 		return true;
 	}
 }
+
+bool Board::checkWinCondition(char x, int y) {
+	int ix = toupper(x) - 65;
+	y -= 1;
+	return (checkHorizontal(ix, y) == true || checkVertical(ix, y) == true);
+}
+
+bool Board::checkWinCondition(int x, int y) {
+	y -= 1;
+	return (checkHorizontal(x, y) == true || checkVertical(x, y) == true);
+}
+
+bool Board::checkHorizontal(int x, int y) {
+	char piece = board[x][y];
+	int start = x - 3;
+	while (start < 0) {
+		start++;
+	}
+	int end = x + 3;
+	while (end >= 8) {
+		end--;
+	}
+	int count = 0;
+	for (int i = start; i < end; ++i) {
+		if (board[i][y] == piece) {
+			count++;
+		}
+		else {
+			count = 0;
+		}
+		if (count == 4) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Board::checkVertical(int x, int y) {
+	char piece = board[x][y];
+	int start = y - 3;
+	while (start < 0) {
+		start++;
+	}
+	int end = y + 3;
+	while (end >= 8) {
+		end--;
+	}
+	int count = 0;
+	for (int i = start; i < end; ++i) {
+		if (board[x][i] == piece) {
+			count++;
+		}
+		else {
+			count = 0;
+		}
+		if (count == 4) {
+			return true;
+		}
+	}
+	return false;
+}
+
 Board::~Board () {
 	if(board != nullptr){
 		delete[] board;

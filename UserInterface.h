@@ -7,6 +7,7 @@ public:
 	~UserInterface();
 
 	char welcome();
+	std::string enterPosition();
 	int exit();
 };
 

@@ -12,7 +12,8 @@ private:
 	int rows = 8;
 	int cols = 8;
 	char board[8][8];
-
+	bool checkHorizontal(int x, int y);
+	bool checkVertical(int x, int y);
 	bool checkBounds(int x, int y)const;
 public:
 
@@ -26,6 +27,8 @@ public:
 	bool setPiece (char x, int y, char piece);
 	char getPiece (int x, int y);
 	char getPiece (char x, int y);
+	bool checkWinCondition(char x, int y);
+	bool checkWinCondition(int x, int y);
 };
 
 std::ostream& operator<<(std::ostream& os, const Board& c);

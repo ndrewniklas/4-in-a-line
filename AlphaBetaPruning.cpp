@@ -21,7 +21,7 @@ float AlphaBetaPruning::MaxValue(Board current, float alpha, float beta) const {
 	}
 	float v = -INFINITY;
 	//for each a in ACTIONS(state) do
-	for (size_t a = 0; a < length; a++) {
+	/*for (size_t a = 0; a < length; a++) {
 		for (size_t s = 0; s < length; s++) {
 			v = fmax(v, MinValue(s, alpha, beta));
 			if (v >= beta) {
@@ -30,7 +30,7 @@ float AlphaBetaPruning::MaxValue(Board current, float alpha, float beta) const {
 				alpha = fmax(alpha, v);
 			}
 		}
-	}
+	}*/
 	return v;
 }
 
@@ -40,7 +40,7 @@ float AlphaBetaPruning::MinValue(Board current, float alpha, float beta) const {
 	}
 	float v = +INFINITY;
 	//for each a in ACTIONS(state) do
-	for (size_t a = 0; a < length; a++) {
+	/*for (size_t a = 0; a < length; a++) {
 		for (size_t s = 0; s < length; s++) {
 			v = fmin(v, MaxValue(s, alpha, beta));
 			if (v <= alpha) {
@@ -49,7 +49,7 @@ float AlphaBetaPruning::MinValue(Board current, float alpha, float beta) const {
 				beta = fmin(beta, v);
 			}
 		}
-	}
+	}*/
 	return v;
 }
 

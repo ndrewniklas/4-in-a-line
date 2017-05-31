@@ -1,6 +1,6 @@
 #include "UserInterface.h"
-
-
+#include <string>
+#include <locale>  
 
 UserInterface::UserInterface() {
 }
@@ -15,6 +15,18 @@ char UserInterface::welcome() {
 		answer = tolower(answer);
 	};
 	return answer;
+}
+
+std::string UserInterface::enterPosition() {
+	std::locale loc;
+	std::string input;
+	std::cout << "Choose your next move:";
+	std::cin >> input;
+	while (input.length() != 2 || !std::isalpha(input[0],loc) || !std::isdigit(input[1],loc)) {
+		std::cout << "Not a legal move!\nChoose your next move:";
+		std::cin >> input;
+	}
+	return input;
 }
 
 int UserInterface::exit() {
