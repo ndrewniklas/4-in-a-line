@@ -9,5 +9,6 @@ public:
 	char welcome();
 	std::string enterPosition();
 	int exit();
+	int botThinkTime();
 };
 

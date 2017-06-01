@@ -17,6 +17,19 @@ char UserInterface::welcome() {
 	return answer;
 }
 
+int UserInterface::botThinkTime() {
+	int answer = 5;
+	std::cout << "Enter the amount of time in seconds for the bot to think: ";
+	std::cin >> answer;
+	while (std::cin.fail() || answer > 5) {
+		std::cout << "Time cannot be greater than 5 seconds!\nEnter the amount of time in seconds for the bot to think: ";
+		std::cin.clear();
+		std::cin.ignore(256, '\n');
+		std::cin >> answer;
+	}
+	return answer;
+}
+
 std::string UserInterface::enterPosition() {
 	std::locale loc;
 	std::string input;
