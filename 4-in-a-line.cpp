@@ -9,7 +9,7 @@
 
 #include "UserInterface.h"
 #include "Board.h"
-
+#include "Timer.h"
 using namespace std;
 
 void gameLoop(Board*, UserInterface);
@@ -19,7 +19,8 @@ char botPlayer, first = 'X', second = 'O';
 int botThinkTime;
 int main()
 {
-	UserInterface ui;
+
+	/*UserInterface ui;
 	Board* game = new Board();
 	char result = ui.welcome();
 	if (result == 'y') botPlayer = second;
@@ -27,7 +28,7 @@ int main()
 	botThinkTime = ui.botThinkTime();
 	gameLoop(game, ui);
 	//ui.exit();
-	system("pause");
+	system("pause");*/
     return 0;
 }
 
@@ -87,4 +88,11 @@ bool botTakeTurn(char player, UserInterface ui, Board* game) {
 		return true;
 	}
 	return false;
+}
+
+bool timerFinished(std::function<void(void)> const & callback) {
+	Timer t;
+	t.Start(chrono::seconds(2), callback);
+	t.Stop();
+	return true;
 }
