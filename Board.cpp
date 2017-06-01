@@ -6,15 +6,15 @@
 Board::Board () {
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < cols; c++) {
-			board[r][c] = '-';
+			board[r][c] = EMPTY;
 		}
 	}
 }
 
-Board::Board (const Board &other) {
+Board::Board (Board* other) {
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < cols; c++) {
-			board[r][c] = other.board[rows][cols];
+			board[r][c] = other->board[rows][cols];
 		}
 	}
 }
@@ -45,7 +45,7 @@ std::string Board::print () const {
 
 bool Board::setPiece (int x, int y, char piece) {
 	if (checkBounds(x, y)) {
-		if (board[x][y] == empty) {
+		if (board[x][y] == EMPTY) {
 			board[x][y] = piece;
 			return true;
 		} else {
@@ -92,6 +92,14 @@ bool Board::checkBounds(int x, int y) const {
 	}
 }
 
+bool Board::isEmpty(int x, int y) const {
+	if (board[x][y] == EMPTY) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool Board::checkWinCondition(char x, int y) {
 	int ix = toupper(x) - 65;
 	y -= 1;
@@ -101,6 +109,20 @@ bool Board::checkWinCondition(char x, int y) {
 bool Board::checkWinCondition(int x, int y) {
 	y -= 1;
 	return (checkHorizontal(x, y) == true || checkVertical(x, y) == true);
+}
+
+std::vector<Board>* Board::getSuccessors(char player) const {
+	std::vector<Board> temp;
+	for (size_t r = 0; r < rows; r++) {
+		for (size_t c = 0; c < cols; c++) {
+			if (isEmpty(r, c)) {
+				Board next(*this);
+				next.setPiece((int)r, (int)c, player);
+				temp.push_back(next);
+			}
+		}
+	}
+	return &temp;
 }
 
 bool Board::checkHorizontal(int x, int y) {
