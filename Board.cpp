@@ -52,6 +52,7 @@ bool Board::setPiece (int x, int y, char piece) {
 			return false;
 		}
 	}
+	return false;
 }
 
 bool Board::setPiece (char x, int y, char piece) {
@@ -63,6 +64,7 @@ bool Board::setPiece (char x, int y, char piece) {
 	} else {
 		return false;
 	}
+	return false;
 }
 
 char Board::getPiece(int x, int y) {
