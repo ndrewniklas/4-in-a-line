@@ -4,7 +4,7 @@
 #include <cmath>
 #include "Board.h"
 
-class AlphaBetaPruning {
+class AI {
 
 private:
 	float alpha;
@@ -12,10 +12,11 @@ private:
 
 
 public:
-	AlphaBetaPruning();
-	~AlphaBetaPruning();
+	AI();
+	~AI();
 
 	std::string search(Board current);
+	Board depthLimitedSearch(Board board, int depth);
 	float MaxValue(Board current, float alpha, float beta) const;
 	float MinValue(Board current, float alpha, float beta) const;
 	bool cutOff(Board state, int depth) const;

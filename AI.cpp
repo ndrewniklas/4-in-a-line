@@ -1,21 +1,25 @@
-#include "AlphaBetaPruning.h"
+#include "AI.h"
 
 
 
-AlphaBetaPruning::AlphaBetaPruning() {
+AI::AI() {
 }
 
 
-AlphaBetaPruning::~AlphaBetaPruning() {
+AI::~AI() {
 }
 
-std::string AlphaBetaPruning::search(Board current) {
+std::string AI::search(Board current) {
 	float v = MaxValue(current, -INFINITY, +INFINITY);
 
 	return std::string();
 }
 
-float AlphaBetaPruning::MaxValue(Board current, float alpha, float beta) const {
+Board AI::depthLimitedSearch(Board board, int limit) {
+	return NULL;
+}
+
+float AI::MaxValue(Board current, float alpha, float beta) const {
 	if (cutOff(current, 1)) {
 		return evaluate(current);
 	}
@@ -33,7 +37,7 @@ float AlphaBetaPruning::MaxValue(Board current, float alpha, float beta) const {
 	return v;
 }
 
-float AlphaBetaPruning::MinValue(Board current, float alpha, float beta) const {
+float AI::MinValue(Board current, float alpha, float beta) const {
 	if (cutOff(current, 1)) {
 		return evaluate(current);
 	}
@@ -51,11 +55,11 @@ float AlphaBetaPruning::MinValue(Board current, float alpha, float beta) const {
 	return v;
 }
 
-bool AlphaBetaPruning::cutOff(Board state, int depth) const {
+bool AI::cutOff(Board state, int depth) const {
 	return false;
 }
 
-float AlphaBetaPruning::evaluate(Board state) const {
-
+float AI::evaluate(Board state) const {
+	//Board.calculateScore() is needed
 	return 0;
 }

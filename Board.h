@@ -16,6 +16,7 @@ private:
 	bool checkVertical(int x, int y);
 	bool checkBounds(int x, int y)const;
 	bool isEmpty(int x, int y) const;
+	long computePlrScore(char plr, int row, int col);
 public:
 
 	Board ();
@@ -30,6 +31,7 @@ public:
 	char getPiece (char x, int y);
 	bool checkWinCondition(char x, int y);
 	bool checkWinCondition(int x, int y);
+	long calculateScore();
 	std::vector<Board>* getSuccessors(char player)const;
 };
 

@@ -177,6 +177,114 @@ bool Board::checkVertical(int x, int y) {
 	return false;
 }
 
+long Board::calculateScore() {
+	long score = 0;
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			char piece = board[i][j];
+			if (piece == 'X') { //Found the CPU piece
+				//Compute score for the CPU's pieces, add to total
+				score += computePlrScore(piece, i, j);
+			}
+			else if (piece == 'O') { //Found the PLR piece
+				//Compute score for PLR's pieces, subtract from total
+				score -= computePlrScore(piece, i, j);
+			}
+		}
+	}
+	return score;
+}
+
+long Board::computePlrScore(char plr, int row, int col) {
+	long score = 0;
+	int inARow = 1, inACol = 1, totalRow = 1, totalCol = 1;
+	//Horizontal Count
+	if (row < rows - 3) {
+		for (int r = row + 1; r <= row + 3; ++r) {
+			char nextPiece = board[r][col];
+			if (nextPiece == plr || nextPiece == '-') {
+				if (nextPiece == plr) {
+					inARow++;
+					totalRow++;
+				}
+				else if(r != row + 3){
+					//We found an empty slot, don't count it 
+					inARow = 0;
+				}
+			}
+			else { // Found player piece
+				inARow = 0;
+				totalRow = 0;
+				break; //This block is useless since it is being blocked off
+			}
+		}
+	}
+	//Vertical Count
+	if (col < cols - 3) {
+		for (int c = col + 1; c <= col + 3; ++c) {
+			char nextPiece = board[row][c];
+			if (nextPiece == plr || nextPiece == '-') {
+				if (nextPiece == plr) {
+					inACol++;
+					totalCol++;
+				}
+				else if (c != col+3){
+					//We found an empty slot, don't count it 
+					inACol = 0;
+				}
+			}
+			else { // Found player piece
+				inARow = 0;
+				totalRow = 0;
+				break; //This block is useless since it is being blocked off
+			}
+		}
+	}
+	if (inARow == 4 || inACol == 4) score += 10000;
+	if (inARow == 3) {
+		//DEBUG
+		//std::cout << "3 IN A ROW\n";
+		//if (row - 1 >= 0) std::cout << board[row - 1][col] << std::endl;
+		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == '-' which means that the right side is open
+		if (row - 1 >= 0 && board[row - 1][col] == '-') {
+			//The player would have to choose between blocking i-1 or i+3 and the bot
+			//could take the other thus making 4 in a row. Bot wins, return a high score
+			score += 10000;
+		}
+		else {
+			//Three is a row with only 1 opening, still good but not game winning
+			score += 100;
+		}
+	}
+	else if (inACol == 3) {
+		//DEBUG
+		//std::cout << "3 IN A COL\n";
+		//if (col - 1 >= 0) std::cout << board[row][col - 1] << std::endl;
+		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == '-' which means that the right side is open
+		if (col - 1 >= 0 && board[row][col - 1] == '-') {
+			//The player would have to choose between blocking i-1 or i+3 and the bot
+			//could take the other thus making 4 in a row. Bot wins, return a high score
+			score += 10000;
+		}
+		else {
+			//Three is a row with only 1 opening, still good but not game winning
+			score += 100;
+		}
+	}
+	else {
+		if (totalRow > 0) {
+			if (totalRow == 3) score += 100;
+			else score += totalRow * 10;
+		}
+		if (totalCol > 0) {
+			if (totalCol == 3) score += 100;
+			else score += totalCol * 10;
+		}
+	}
+
+	return score;
+}
+
 Board::~Board () {
 	if(board != nullptr){
 		delete[] board;
