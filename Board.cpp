@@ -11,7 +11,7 @@ Board::Board () {
 	}
 }
 
-Board::Board (Board* other) {
+Board::Board (const Board* other) {
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < cols; c++) {
 			board[r][c] = other->board[rows][cols];
@@ -58,7 +58,7 @@ bool Board::setPiece (int x, int y, char piece) {
 bool Board::setPiece (char x, int y, char piece) {
 	int ix = toupper(x) - 65;
 	y -= 1;
-	if (checkBounds(ix, y) && board[ix][y] == '-') {
+	if (checkBounds(ix, y) && board[ix][y] == EMPTY) {
 		board[ix][y] = piece;
 		return true;
 	} else {
@@ -113,13 +113,13 @@ bool Board::checkWinCondition(int x, int y) {
 	return (checkHorizontal(x, y) == true || checkVertical(x, y) == true);
 }
 
-std::vector<Board>* Board::getSuccessors(char player) const {
-	std::vector<Board> temp;
+std::vector<Board*>* Board::getSuccessors(char player) const {
+	std::vector<Board*> temp;
 	for (size_t r = 0; r < rows; r++) {
 		for (size_t c = 0; c < cols; c++) {
 			if (isEmpty(r, c)) {
-				Board next(*this);
-				next.setPiece((int)r, (int)c, player);
+				Board* next = new Board(this);
+				next->setPiece((int)r, (int)c, player);
 				temp.push_back(next);
 			}
 		}
@@ -182,11 +182,11 @@ long Board::calculateScore() {
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
 			char piece = board[i][j];
-			if (piece == 'X') { //Found the CPU piece
+			if (piece == BOT) { //Found the CPU piece
 				//Compute score for the CPU's pieces, add to total
 				score += computePlrScore(piece, i, j);
 			}
-			else if (piece == 'O') { //Found the PLR piece
+			else if (piece == PLAYER) { //Found the PLR piece
 				//Compute score for PLR's pieces, subtract from total
 				score -= computePlrScore(piece, i, j);
 			}
@@ -196,13 +196,13 @@ long Board::calculateScore() {
 }
 
 long Board::computePlrScore(char plr, int row, int col) {
-	long score = 0;
+	int score = 0;
 	int inARow = 1, inACol = 1, totalRow = 1, totalCol = 1;
 	//Horizontal Count
 	if (row < rows - 3) {
 		for (int r = row + 1; r <= row + 3; ++r) {
 			char nextPiece = board[r][col];
-			if (nextPiece == plr || nextPiece == '-') {
+			if (nextPiece == plr || nextPiece == EMPTY) {
 				if (nextPiece == plr) {
 					inARow++;
 					totalRow++;
@@ -223,7 +223,7 @@ long Board::computePlrScore(char plr, int row, int col) {
 	if (col < cols - 3) {
 		for (int c = col + 1; c <= col + 3; ++c) {
 			char nextPiece = board[row][c];
-			if (nextPiece == plr || nextPiece == '-') {
+			if (nextPiece == plr || nextPiece == EMPTY) {
 				if (nextPiece == plr) {
 					inACol++;
 					totalCol++;
@@ -245,8 +245,8 @@ long Board::computePlrScore(char plr, int row, int col) {
 		//DEBUG
 		//std::cout << "3 IN A ROW\n";
 		//if (row - 1 >= 0) std::cout << board[row - 1][col] << std::endl;
-		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == '-' which means that the right side is open
-		if (row - 1 >= 0 && board[row - 1][col] == '-') {
+		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == EMPTY which means that the right side is open
+		if (row - 1 >= 0 && board[row - 1][col] == EMPTY) {
 			//The player would have to choose between blocking i-1 or i+3 and the bot
 			//could take the other thus making 4 in a row. Bot wins, return a high score
 			score += 10000;
@@ -260,8 +260,8 @@ long Board::computePlrScore(char plr, int row, int col) {
 		//DEBUG
 		//std::cout << "3 IN A COL\n";
 		//if (col - 1 >= 0) std::cout << board[row][col - 1] << std::endl;
-		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == '-' which means that the right side is open
-		if (col - 1 >= 0 && board[row][col - 1] == '-') {
+		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == EMPTY which means that the right side is open
+		if (col - 1 >= 0 && board[row][col - 1] == EMPTY) {
 			//The player would have to choose between blocking i-1 or i+3 and the bot
 			//could take the other thus making 4 in a row. Bot wins, return a high score
 			score += 10000;

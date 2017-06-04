@@ -9,6 +9,8 @@
 class Board {
 private:
 	const char EMPTY = '-';
+	const char PLAYER = 'O';
+	const char BOT = 'X';
 	int rows = 8;
 	int cols = 8;
 	char board[8][8];
@@ -20,7 +22,7 @@ private:
 public:
 
 	Board ();
-	Board(Board * other);
+	Board(const Board * other);
 	~Board ();
 
 	int getSize () const;
@@ -32,7 +34,7 @@ public:
 	bool checkWinCondition(char x, int y);
 	bool checkWinCondition(int x, int y);
 	long calculateScore();
-	std::vector<Board>* getSuccessors(char player)const;
+	std::vector<Board*>* getSuccessors(char player)const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Board& c);

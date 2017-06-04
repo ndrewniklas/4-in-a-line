@@ -29,6 +29,7 @@ int main()
 	gameLoop(game, ui);
 	//ui.exit();
 	system("pause");
+	delete game;
     return 0;
 }
 
@@ -77,6 +78,7 @@ bool botTakeTurn(char player, UserInterface ui, Board* game) {
 		pPos = ui.enterPosition();
 	}
 	cout << *(game);
+	cout << "Score:" << game->calculateScore() << endl;
 	if (game->checkWinCondition(pPos[0], atoi(&pPos[1]))) {
 		cout << "Computer wins the game!\n";
 		return true;
