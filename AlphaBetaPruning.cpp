@@ -56,6 +56,5 @@ bool AlphaBetaPruning::cutOff(Board state, int depth) const {
 }
 
 float AlphaBetaPruning::evaluate(Board state) const {
-
-	return 0;
+	return state.calculateScore();
 }
