@@ -18,8 +18,8 @@ private:
 	char board[8][8];
 	bool checkHorizontal(int x, int y);
 	bool checkVertical(int x, int y);
-	bool checkBounds(int x, int y)const;
-	bool isEmpty(int x, int y) const;
+	bool checkBounds(int x, int y);
+	bool isEmpty(int x, int y) ;
 	long computePlrScore(char plr, int row, int col);
 	void setMove(char row, int col);
 public:
@@ -38,8 +38,9 @@ public:
 	bool checkWinCondition(char x, int y);
 	bool checkWinCondition(int x, int y);
 	long calculateScore();
-	std::string getMove() const;
-	std::vector<Board*>* getSuccessors(char player)const;
+	bool isBoardFull();
+	std::string getMove() ;
+	std::vector<Board*>* getSuccessors(char player);
 };
 
 std::ostream& operator<<(std::ostream& os, const Board& c);

@@ -18,13 +18,14 @@ bool plrTakeTurn(char player, UserInterface ui, Board* game);
 bool botTakeTurn(char player, UserInterface ui, Board* game);
 char bot = 'X', human = 'O', first;
 int botThinkTime;
-AI* ai = new AI();
+AI* ai;
 
 int main()
 {
 
 	UserInterface ui;
 	Board* game = new Board();
+	ai = new AI();
 	char result = ui.welcome();
 	if (result == 'y') first = human;
 	else first = bot;
@@ -75,6 +76,8 @@ bool plrTakeTurn(char player,UserInterface ui, Board* game) {
 }
 bool botTakeTurn(char player, UserInterface ui, Board* game) {
 	//Do bot stuff, currently just another player
+	//Timer t;
+	//t.Start(chrono::seconds(botThinkTime), ai->triggerTimerFlag());
 	string pPos = ai->search(game);
 	//string pPos = ui.enterPosition();
 	cout << pPos << endl;

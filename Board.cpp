@@ -85,7 +85,7 @@ char Board::getPiece(char x, int y) {
 	}
 }
 
-bool Board::checkBounds(int x, int y) const {
+bool Board::checkBounds(int x, int y)  {
 	if (x >= rows || y >= cols) {
 		return false;
 	} else if (x < 0 || y < 0) {
@@ -95,7 +95,8 @@ bool Board::checkBounds(int x, int y) const {
 	}
 }
 
-bool Board::isEmpty(int x, int y) const {
+bool Board::isEmpty(int x, int y)  {
+	if (x >= rows || y >= cols) return false;
 	if (board[x][y] == EMPTY) {
 		return true;
 	} else {
@@ -114,10 +115,10 @@ bool Board::checkWinCondition(int x, int y) {
 	return (checkHorizontal(x, y) == true || checkVertical(x, y) == true);
 }
 
-std::vector<Board*>* Board::getSuccessors(char player) const {
+std::vector<Board*>* Board::getSuccessors(char player)  {
 	std::vector<Board*> temp;
-	for (size_t r = 0; r < rows; r++) {
-		for (size_t c = 0; c < cols; c++) {
+	for (int r = 0; r < 8; r++) {
+		for (int c = 0; c < 8; c++) {
 			if (isEmpty(r, c)) {
 				Board* next = new Board(this);
 				next->setPiece((int)r, (int)c, player);
@@ -127,6 +128,16 @@ std::vector<Board*>* Board::getSuccessors(char player) const {
 		}
 	}
 	return &temp;
+}
+
+bool Board::isBoardFull() {
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < cols; ++j) {
+			//If there is at least one empty slot then it isn't full
+			if (board[i][j] == EMPTY) return false;
+		}
+	}
+	return true;
 }
 
 bool Board::checkHorizontal(int x, int y) {
@@ -202,12 +213,12 @@ void Board::setMove(char row, int col) {
 	oss << row << col;
 	move = oss.str();
 	//move = row + col;
-	std::cout << move << std::endl;
+	//std::cout << move << std::endl;
 	/*move[0] = row;
 	move[1] = col;*/
 }
 
-std::string Board::getMove() const {
+std::string Board::getMove()  {
 	return move;
 }
 

@@ -30,7 +30,6 @@ float AI::MaxValue(Board* current, float alpha, float beta) {
 	}
 	float v = -INFINITY;
 	std::vector<Board*>* successors = current->getSuccessors('X');
-
 	for (size_t s = 0; s < successors->size(); s++) {
 		Board* temp = successors->at(s);
 		lastMove = temp->move;
@@ -40,17 +39,18 @@ float AI::MaxValue(Board* current, float alpha, float beta) {
 		} else {
 			alpha = fmax(alpha, v);
 		}
+		//clear memory
+		for (int i = 0; i < successors->size(); ++i) {
+			delete successors->at(i);
+		}
+		delete successors;
 	}
-	//clear memory
-	for (int i = 0; i < successors->size(); ++i) {
-		delete successors->at(i);
-	}
-	delete successors;
 	return v;
 }
 
 float AI::MinValue(Board* current, float alpha, float beta) {
 	if (timerFlag) {
+		timerFlag = false;
 		return evaluate(current);
 	}
 	float v = +INFINITY;
@@ -65,19 +65,17 @@ float AI::MinValue(Board* current, float alpha, float beta) {
 		} else {
 			beta = fmin(beta, v);
 		}
+		//clear memory
+		for (int i = 0; i < successors->size(); ++i) {
+			delete successors->at(i);
+		}
+		delete successors;
 	}
-	//clear memory
-	for (int i = 0; i < successors->size(); ++i) {
-		delete successors->at(i);
-	}
-	delete successors;
 	return v;
 }
 
 bool AI::cutOff(Board* state, int depth) {
-	//Cut off the branches where the new score is worse than the previous score
-	//if (state->calculateScore() < depth) return true;
-	return false;
+	return timerFlag;
 }
 
 long AI::evaluate(Board* state) {
