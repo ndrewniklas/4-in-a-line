@@ -31,7 +31,7 @@ float AI::MaxValue(Board* currBoard, float alpha, float beta, int depth)
 {
 	float score = currBoard->calculateScore();
 	//cutoff test
-	if (depth == 0 || score >= 5000 || score <= -5000 || currBoard->isBoardFull())
+	if (depth <= 0 || score >= 999 || score <= -999 || currBoard->isBoardFull())
 	{
 		currMove = currBoard->getMove();
 		return evaluate(*(currBoard));
@@ -74,7 +74,7 @@ float AI::MaxValue(Board* currBoard, float alpha, float beta, int depth)
 float AI::MinValue(Board* currBoard, float alpha, float beta, int depth) {
 	float score = currBoard->calculateScore();
 	//cutoff test
-	if (depth == 0 || score >= 5000 || score <= -5000 || currBoard->isBoardFull())
+	if (depth <= 0 || score >= 999 || score <= -999 || currBoard->isBoardFull())
 	{
 		currMove = currBoard->getMove();
 		return evaluate(*(currBoard));
