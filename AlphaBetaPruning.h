@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cmath>
+#include <vector>
 #include "Board.h"
 
 class AlphaBetaPruning {
@@ -14,7 +15,8 @@ private:
 public:
 	AlphaBetaPruning();
 	~AlphaBetaPruning();
-
+	
+	std::string lastMove;
 	std::string search(Board current);
 	float MaxValue(Board current, float alpha, float beta) const;
 	float MinValue(Board current, float alpha, float beta) const;

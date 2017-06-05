@@ -120,6 +120,7 @@ std::vector<Board*>* Board::getSuccessors(char player) const {
 			if (isEmpty(r, c)) {
 				Board* next = new Board(this);
 				next->setPiece((int)r, (int)c, player);
+				next->setMove(r + 65, (int)c);
 				temp.push_back(next);
 			}
 		}
@@ -193,6 +194,16 @@ long Board::calculateScore() {
 		}
 	}
 	return score;
+}
+
+void Board::setMove(char row, int col) {
+	move = row + col;
+	/*move[0] = row;
+	move[1] = col;*/
+}
+
+std::string Board::getMove() const {
+	return move;
 }
 
 long Board::computePlrScore(char plr, int row, int col) {
