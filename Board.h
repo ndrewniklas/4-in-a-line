@@ -16,7 +16,7 @@ private:
 	int rows = 8;
 	int cols = 8;
 	//char board[8][8];
-	std::vector<std::vector<char>*>* vBoard;
+	std::vector<std::vector<char>> vBoard;
 	bool checkHorizontal(int x, int y);
 	bool checkVertical(int x, int y);
 	bool checkBounds(int x, int y);
@@ -29,7 +29,7 @@ public:
 	Board(const Board &other);
 	~Board ();
 
-	std::vector<std::vector<char>*>* getBoard() const;
+	std::vector<std::vector<char>> getBoard() const;
 	std::string move;
 	float myScore;
 	int getSize () const;
@@ -44,7 +44,7 @@ public:
 	bool isBoardFull();
 	bool isFinished(int depth, float score);
 	std::string getMove() ;
-	std::vector<Board*>* getSuccessors(char player);
+	std::vector<Board> getSuccessors(char player, Board current);
 };
 
 std::ostream& operator<<(std::ostream& os, const Board& c);

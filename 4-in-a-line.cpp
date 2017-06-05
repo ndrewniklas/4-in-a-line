@@ -79,7 +79,7 @@ void callback() {
 }
 bool botTakeTurn(char player, UserInterface ui, Board* game) {
 	//Do bot stuff, currently just another player
-	string pPos = ai->search(game);
+	string pPos = ai->search(*(game));
 	//string pPos = ui.enterPosition();
 	cout << pPos << endl;
 	game->setPiece(pPos[0], atoi(&pPos[1]), player);
