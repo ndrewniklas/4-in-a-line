@@ -10,6 +10,7 @@ Board::Board () {
 			board[r][c] = EMPTY;
 		}
 	}
+	myScore = 0;
 }
 
 Board::Board (const Board* other) {
@@ -18,6 +19,7 @@ Board::Board (const Board* other) {
 			board[r][c] = other->board[rows][cols];
 		}
 	}
+	myScore = calculateScore();
 }
 
 int Board::getSize () const {
@@ -116,18 +118,23 @@ bool Board::checkWinCondition(int x, int y) {
 }
 
 std::vector<Board*>* Board::getSuccessors(char player)  {
-	std::vector<Board*> temp;
+	std::vector<Board*>* temp = new std::vector<Board*>();
 	for (int r = 0; r < 8; r++) {
 		for (int c = 0; c < 8; c++) {
 			if (isEmpty(r, c)) {
 				Board* next = new Board(this);
 				next->setPiece((int)r, (int)c, player);
 				next->setMove(r + 65, (int)c+1);
-				temp.push_back(next);
+				temp->push_back(next);
 			}
 		}
 	}
-	return &temp;
+	return temp;
+}
+
+bool Board::isFinished(int depth, float score) {
+	if (depth == 0 || score >= 10000 || score <= -10000 || isBoardFull()) return true;
+	return false;
 }
 
 bool Board::isBoardFull() {
@@ -190,8 +197,8 @@ bool Board::checkVertical(int x, int y) {
 	return false;
 }
 
-long Board::calculateScore() {
-	long score = 0;
+float Board::calculateScore() {
+	float score = 0;
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
 			char piece = board[i][j];
@@ -222,8 +229,8 @@ std::string Board::getMove()  {
 	return move;
 }
 
-long Board::computePlrScore(char plr, int row, int col) {
-	int score = 0;
+float Board::computePlrScore(char plr, int row, int col) {
+	float score = 0;
 	int inARow = 1, inACol = 1, totalRow = 1, totalCol = 1;
 	//Horizontal Count
 	if (row < rows - 3) {
@@ -313,9 +320,9 @@ long Board::computePlrScore(char plr, int row, int col) {
 }
 
 Board::~Board () {
-	if(board != nullptr){
-		delete[] board;
-	}
+	//if(board != nullptr){
+	//	delete[] board;
+	//}
 }
 
 std::ostream & operator<<(std::ostream & os, const Board & c) {

@@ -20,7 +20,7 @@ private:
 	bool checkVertical(int x, int y);
 	bool checkBounds(int x, int y);
 	bool isEmpty(int x, int y) ;
-	long computePlrScore(char plr, int row, int col);
+	float computePlrScore(char plr, int row, int col);
 	void setMove(char row, int col);
 public:
 
@@ -29,6 +29,7 @@ public:
 	~Board ();
 
 	std::string move;
+	float myScore;
 	int getSize () const;
 	std::string print ()const;
 	bool setPiece(int x, int y, char piece);
@@ -37,8 +38,9 @@ public:
 	char getPiece (char x, int y);
 	bool checkWinCondition(char x, int y);
 	bool checkWinCondition(int x, int y);
-	long calculateScore();
+	float calculateScore();
 	bool isBoardFull();
+	bool isFinished(int depth, float score);
 	std::string getMove() ;
 	std::vector<Board*>* getSuccessors(char player);
 };

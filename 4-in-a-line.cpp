@@ -74,16 +74,19 @@ bool plrTakeTurn(char player,UserInterface ui, Board* game) {
 	}
 	return false;
 }
+void callback() {
+	ai->triggerTimerFlag();
+}
 bool botTakeTurn(char player, UserInterface ui, Board* game) {
 	//Do bot stuff, currently just another player
-	//Timer t;
-	//t.Start(chrono::seconds(botThinkTime), ai->triggerTimerFlag());
+	Timer t;
+	t.Start(chrono::seconds(botThinkTime),callback);
 	string pPos = ai->search(game);
 	//string pPos = ui.enterPosition();
 	cout << pPos << endl;
 	while (!game->setPiece(pPos[0], atoi(&pPos[1]), player)) {
 		cout << "Not a legal move!\n";
-		pPos = ui.enterPosition();
+		pPos = ai->search(game);
 		//pPos = ai->search(game);
 	}
 	cout << *(game);

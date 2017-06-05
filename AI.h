@@ -14,12 +14,12 @@ public:
 	AI();
 	~AI();
 	std::string lastMove = "";
+	std::vector<std::string> moves;
 	std::string search(Board* current);
-	Board depthLimitedSearch(Board* board, int depth);
-	float MaxValue(Board* current, float alpha, float beta) ;
-	float MinValue(Board* current, float alpha, float beta) ;
-	bool cutOff(Board* state, int depth);
-	long evaluate(Board* state) ;
+	float MaxValue(Board* current, float alpha, float beta, int depth) ;
+	float MinValue(Board* current, float alpha, float beta, int depth) ;
+	bool cutOff(Board* state, float score);
+	float evaluate(Board* state) ;
 	void triggerTimerFlag();
 
 };
