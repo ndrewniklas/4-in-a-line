@@ -16,7 +16,7 @@ std::string AI::search(Board* current) {
 	while (depth <= 4) 
 	{
 		v = MaxValue(current, -INFINITY, +INFINITY, depth);
-		if (v >= 10000) return lastMove;
+		if (v >= 5000) return lastMove;
 		depth++;
 	}
 	timerFlag = false;
@@ -30,7 +30,7 @@ void AI::triggerTimerFlag() {
 float AI::MaxValue(Board* current, float alpha, float beta, int depth) {
 	float score = current->calculateScore();
 	//cutoff test
-	if (depth == 0 || score >= 9999) {
+	if (depth == 0 || score >= 5000 || score <= -5000) {
 		return evaluate(current);
 	}
 	float v = -INFINITY;
@@ -55,7 +55,7 @@ float AI::MaxValue(Board* current, float alpha, float beta, int depth) {
 float AI::MinValue(Board* current, float alpha, float beta, int depth) {
 	float score = current->calculateScore();
 	//cutoff test
-	if (depth == 0 || score >= 9999) {
+	if (depth == 0 || score >= 5000 || score <= -5000) {
 		return evaluate(current);
 	}
 	float v = +INFINITY;

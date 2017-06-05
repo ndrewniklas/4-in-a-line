@@ -310,7 +310,7 @@ float Board::computePlrScore(char plr, int row, int col) {
 		}
 		else {
 			//Three is a row with only 1 opening, still good but not game winning
-			score += 100;
+			score += 500;
 		}
 	}
 	else if (inACol == 3) {
@@ -325,7 +325,7 @@ float Board::computePlrScore(char plr, int row, int col) {
 		}
 		else {
 			//Three is a row with only 1 opening, still good but not game winning
-			score += 100;
+			score += 500;
 		}
 	}
 	else {
