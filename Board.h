@@ -23,6 +23,7 @@ private:
 	bool isEmpty(int x, int y) ;
 	float computePlrScore(char plr, int row, int col);
 	void setMove(char row, int col);
+	std::vector<int> myMove;
 public:
 
 	Board ();
@@ -30,7 +31,7 @@ public:
 	~Board ();
 
 	std::vector<std::vector<char>> getBoard() const;
-	std::string move;
+	std::string move = "A1";
 	float myScore;
 	int getSize () const;
 	std::string print ()const;
@@ -43,8 +44,8 @@ public:
 	float calculateScore();
 	bool isBoardFull();
 	bool isFinished(int depth, float score);
-	std::string getMove() ;
-	std::vector<Board> getSuccessors(char player, Board current);
+	std::vector<int> getMove() const;
+	std::vector<Board>* getSuccessors(char player, Board current);
 };
 
 std::ostream& operator<<(std::ostream& os, const Board& c);

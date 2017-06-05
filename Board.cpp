@@ -13,6 +13,7 @@
 	myScore = 0;
 }*/
 Board::Board () {
+	myMove = { 0,0 };
 	for (int r = 0; r < rows; r++) {
 		std::vector<char> inner;
 			for (int c = 0; c < cols; c++) {
@@ -131,23 +132,23 @@ bool Board::checkWinCondition(char x, int y) {
 }
 
 bool Board::checkWinCondition(int x, int y) {
-	y -= 1;
 	return (checkHorizontal(x, y) == true || checkVertical(x, y) == true);
 }
 
-std::vector<Board> Board::getSuccessors(char player, Board current)  {
+std::vector<Board>* Board::getSuccessors(char player, Board current)  {
 	std::vector<Board> temp;
 	for (int r = 0; r < 8; r++) {
 		for (int c = 0; c < 8; c++) {
 			if (isEmpty(r, c)) {
 				Board next(current);
 				next.setPiece((int)r, (int)c, player);
+				myMove = { r,c };
 				next.setMove(r + 65, (int)c+1);
 				temp.push_back(next);
 			}
 		}
 	}
-	return temp;
+	return &temp;
 }
 
 bool Board::isFinished(int depth, float score) {
@@ -237,14 +238,12 @@ void Board::setMove(char row, int col) {
 	std::stringstream oss;
 	oss << row << col;
 	move = oss.str();
-	//move = row + col;
-	//std::cout << move << std::endl;
 	/*move[0] = row;
 	move[1] = col;*/
 }
 
-std::string Board::getMove()  {
-	return move;
+std::vector<int> Board::getMove() const{
+	return myMove;
 }
 
 float Board::computePlrScore(char plr, int row, int col) {
