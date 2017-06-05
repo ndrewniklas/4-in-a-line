@@ -9,6 +9,7 @@
 
 #include "UserInterface.h"
 #include "Board.h"
+#include "AI.h"
 #include "Timer.h"
 using namespace std;
 
@@ -17,6 +18,8 @@ bool plrTakeTurn(char player, UserInterface ui, Board* game);
 bool botTakeTurn(char player, UserInterface ui, Board* game);
 char bot = 'X', human = 'O', first;
 int botThinkTime;
+AI* ai = new AI();
+
 int main()
 {
 
@@ -72,10 +75,13 @@ bool plrTakeTurn(char player,UserInterface ui, Board* game) {
 }
 bool botTakeTurn(char player, UserInterface ui, Board* game) {
 	//Do bot stuff, currently just another player
-	string pPos = ui.enterPosition();
+	string pPos = ai->search(game);
+	//string pPos = ui.enterPosition();
+	cout << pPos << endl;
 	while (!game->setPiece(pPos[0], atoi(&pPos[1]), player)) {
 		cout << "Not a legal move!\n";
 		pPos = ui.enterPosition();
+		//pPos = ai->search(game);
 	}
 	cout << *(game);
 	cout << "Score:" << game->calculateScore() << endl;

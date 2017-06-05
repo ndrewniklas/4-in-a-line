@@ -15,7 +15,7 @@ std::string AlphaBetaPruning::search(Board current) {
 	return lastMove;
 }
 
-float AlphaBetaPruning::MaxValue(Board current, float alpha, float beta) const {
+float AlphaBetaPruning::MaxValue(Board current, float alpha, float beta){
 	if (cutOff(current, 1)) {
 		return evaluate(current);
 	}
@@ -35,7 +35,7 @@ float AlphaBetaPruning::MaxValue(Board current, float alpha, float beta) const {
 	return v;
 }
 
-float AlphaBetaPruning::MinValue(Board current, float alpha, float beta) const {
+float AlphaBetaPruning::MinValue(Board current, float alpha, float beta){
 	if (cutOff(current, 1)) {
 		return evaluate(current);
 	}
@@ -43,6 +43,8 @@ float AlphaBetaPruning::MinValue(Board current, float alpha, float beta) const {
 	std::vector<Board*>* successors = current.getSuccessors('O');
 
 	for (size_t s = 0; s < successors->size(); s++) {
+		Board temp = successors->at(s);
+		lastMove = temp.getMove();
 		v = fmin(v, MaxValue(successors->at(s), alpha, beta));
 		if (v <= alpha) {
 			return v;

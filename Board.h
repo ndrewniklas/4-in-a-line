@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <sstream>
 #include <vector>

@@ -13,7 +13,7 @@ AI::~AI() {
 std::string AI::search(Board* current) {
 	float v = MaxValue(current, -INFINITY, +INFINITY);
 
-	return std::string();
+	return lastMove;
 }
 
 void AI::triggerTimerFlag() {
@@ -24,17 +24,17 @@ Board AI::depthLimitedSearch(Board* board, int limit) {
 	return NULL;
 }
 
-float AI::MaxValue(Board* current, float alpha, float beta)  {
-	if (cutOff(current, 1)) {
+float AI::MaxValue(Board* current, float alpha, float beta) {
+	if (timerFlag) {
 		return evaluate(current);
 	}
 	float v = -INFINITY;
 	std::vector<Board*>* successors = current->getSuccessors('X');
-	
+
 	for (size_t s = 0; s < successors->size(); s++) {
 		Board* temp = successors->at(s);
 		lastMove = temp->move;
-		v = fmax(v, MinValue(successors->at(s), alpha, beta));
+		v = fmax(v, MinValue(temp, alpha, beta));
 		if (v >= beta) {
 			return v;
 		} else {
@@ -49,20 +49,22 @@ float AI::MaxValue(Board* current, float alpha, float beta)  {
 	return v;
 }
 
-float AI::MinValue(Board* current, float alpha, float beta)  {
-	if (cutOff(current, 1)) {
+float AI::MinValue(Board* current, float alpha, float beta) {
+	if (timerFlag) {
 		return evaluate(current);
 	}
 	float v = +INFINITY;
 	std::vector<Board*>* successors = current->getSuccessors('O');
-	
+
 	for (size_t s = 0; s < successors->size(); s++) {
-			v = fmin(v, MaxValue(successors->at(s), alpha, beta));
-			if (v <= alpha) {
-				return v;
-			} else {
-				beta = fmin(beta, v);
-			}
+		Board* temp = successors->at(s);
+		lastMove = temp->move;
+		v = fmin(v, MaxValue(temp, alpha, beta));
+		if (v <= alpha) {
+			return v;
+		} else {
+			beta = fmin(beta, v);
+		}
 	}
 	//clear memory
 	for (int i = 0; i < successors->size(); ++i) {
@@ -72,12 +74,12 @@ float AI::MinValue(Board* current, float alpha, float beta)  {
 	return v;
 }
 
-bool AI::cutOff(Board* state, int depth)  {
+bool AI::cutOff(Board* state, int depth) {
 	//Cut off the branches where the new score is worse than the previous score
 	//if (state->calculateScore() < depth) return true;
 	return false;
 }
 
-long AI::evaluate(Board* state)  {
+long AI::evaluate(Board* state) {
 	return state->calculateScore();
 }

@@ -1,6 +1,7 @@
 
 #include "Board.h"
 #include <string>
+#include <sstream>
 
 
 Board::Board () {
@@ -120,7 +121,7 @@ std::vector<Board*>* Board::getSuccessors(char player) const {
 			if (isEmpty(r, c)) {
 				Board* next = new Board(this);
 				next->setPiece((int)r, (int)c, player);
-				next->setMove(r + 65, (int)c);
+				next->setMove(r + 65, (int)c+1);
 				temp.push_back(next);
 			}
 		}
@@ -197,7 +198,11 @@ long Board::calculateScore() {
 }
 
 void Board::setMove(char row, int col) {
-	move = row + col;
+	std::stringstream oss;
+	oss << row << col;
+	move = oss.str();
+	//move = row + col;
+	std::cout << move << std::endl;
 	/*move[0] = row;
 	move[1] = col;*/
 }
