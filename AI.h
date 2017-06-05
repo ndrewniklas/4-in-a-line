@@ -13,13 +13,13 @@ private:
 public:
 	AI();
 	~AI();
-
+	std::string lastMove = "";
 	std::string search(Board* current);
 	Board depthLimitedSearch(Board* board, int depth);
-	float MaxValue(Board* current, float alpha, float beta) const;
-	float MinValue(Board* current, float alpha, float beta) const;
-	bool cutOff(Board* state, int depth) const;
-	long evaluate(Board* state)const;
+	float MaxValue(Board* current, float alpha, float beta) ;
+	float MinValue(Board* current, float alpha, float beta) ;
+	bool cutOff(Board* state, int depth);
+	long evaluate(Board* state) ;
 	void triggerTimerFlag();
 
 };
