@@ -13,7 +13,7 @@ AI::~AI() {
 std::string AI::search(Board* current) {
 	int depth = 1;
 	float v;
-	while (depth <= 5) 
+	while (depth <= 4) 
 	{
 		v = MaxValue(current, -INFINITY, +INFINITY, depth);
 		if (v >= 10000) return lastMove;
@@ -28,9 +28,11 @@ void AI::triggerTimerFlag() {
 }
 
 float AI::MaxValue(Board* current, float alpha, float beta, int depth) {
-	float score = current->myScore;
+	float score = current->calculateScore();
 	//cutoff test
-	if (current->isFinished(depth, score)) return evaluate(current);
+	if (depth == 0 || score >= 9999) {
+		return evaluate(current);
+	}
 	float v = -INFINITY;
 	std::vector<Board*>* successors = current->getSuccessors('X');
 	for (int s = 0; s < successors->size(); s++) {
@@ -43,17 +45,17 @@ float AI::MaxValue(Board* current, float alpha, float beta, int depth) {
 			alpha = fmax(alpha, v);
 		}
 	}		//clear memory
-	for (int i = 0; i < successors->size(); ++i) {
-		delete successors->at(i);
-	}
+//	for (int i = 0; i < successors->size(); ++i) {
+//		delete successors->at(i);
+//	}
 	delete successors;
 	return v;
 }
 
 float AI::MinValue(Board* current, float alpha, float beta, int depth) {
-	float score = current->myScore;
+	float score = current->calculateScore();
 	//cutoff test
-	if (current->isFinished(depth, score)) {
+	if (depth == 0 || score >= 9999) {
 		return evaluate(current);
 	}
 	float v = +INFINITY;
@@ -67,12 +69,12 @@ float AI::MinValue(Board* current, float alpha, float beta, int depth) {
 			return v;
 		} else {
 			beta = fmin(beta, v);
-		}
+		} 
 	}		
 	//clear memory
-	for (int i = 0; i < successors->size(); ++i) {
-		delete successors->at(i);
-	}
+//	for (int i = 0; i < successors->size(); ++i) {
+//		delete successors->at(i);
+//	}
 	delete successors;
 	return v;
 }
@@ -83,5 +85,6 @@ bool AI::cutOff(Board* state, float score) {
 }
 
 float AI::evaluate(Board* state) {
-	return state->calculateScore();
+	float score = state->calculateScore();
+	return score;
 }

@@ -15,7 +15,8 @@ private:
 	
 	int rows = 8;
 	int cols = 8;
-	char board[8][8];
+	//char board[8][8];
+	std::vector<std::vector<char>*>* vBoard;
 	bool checkHorizontal(int x, int y);
 	bool checkVertical(int x, int y);
 	bool checkBounds(int x, int y);
@@ -25,9 +26,10 @@ private:
 public:
 
 	Board ();
-	Board(const Board * other);
+	Board(const Board &other);
 	~Board ();
 
+	std::vector<std::vector<char>*>* getBoard() const;
 	std::string move;
 	float myScore;
 	int getSize () const;

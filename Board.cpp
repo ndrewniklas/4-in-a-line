@@ -4,22 +4,45 @@
 #include <sstream>
 
 
-Board::Board () {
+/*Board::Board () {
 	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < cols; c++) {
 			board[r][c] = EMPTY;
 		}
 	}
 	myScore = 0;
-}
-
-Board::Board (const Board* other) {
+}*/
+Board::Board () {
+	vBoard = new std::vector<std::vector<char>*>(8);
 	for (int r = 0; r < rows; r++) {
-		for (int c = 0; c < cols; c++) {
-			board[r][c] = other->board[rows][cols];
+		vBoard->at(r) = new std::vector<char>(8);
+			for (int c = 0; c < cols; c++) {
+				vBoard->at(r)->at(c) = EMPTY;
+			}
+		}
+	myScore = 0;
+}
+Board::Board (const Board& other) {
+	vBoard = new std::vector<std::vector<char>*>(8);
+	for (int r = 0; r < 8; r++) {
+		vBoard->at(r) = new std::vector<char>(8);
+		for (int c = 0; c < 8; c++) {
+			//std::cout << other.getBoard()->at(r)->at(c);
+			vBoard->at(r)->at(c) = other.getBoard()->at(r)->at(c);
 		}
 	}
-	myScore = calculateScore();
+}
+Board::~Board() {
+	for (int r = 0; r < 8; r++) {
+		for (int c = 0; c < 8; c++) {
+			delete vBoard->at(r);
+		}
+	}
+	delete vBoard;
+}
+
+std::vector<std::vector<char>*>* Board::getBoard() const {
+	return vBoard;
 }
 
 int Board::getSize () const {
@@ -39,7 +62,7 @@ std::string Board::print () const {
 		}
 				s << (char)(label + i) << " " ;
 		for(int j = 0; j < cols; ++j){
-			s << board[i][j] << " ";
+			s << vBoard->at(i)->at(j) << " ";
 		}
 		s << "\n";
 	}
@@ -48,8 +71,8 @@ std::string Board::print () const {
 
 bool Board::setPiece (int x, int y, char piece) {
 	if (checkBounds(x, y)) {
-		if (board[x][y] == EMPTY) {
-			board[x][y] = piece;
+		if (vBoard->at(x)->at(y) == EMPTY) {
+			vBoard->at(x)->at(y) = piece;
 			return true;
 		} else {
 			return false;
@@ -61,8 +84,8 @@ bool Board::setPiece (int x, int y, char piece) {
 bool Board::setPiece (char x, int y, char piece) {
 	int ix = toupper(x) - 65;
 	y -= 1;
-	if (checkBounds(ix, y) && board[ix][y] == EMPTY) {
-		board[ix][y] = piece;
+	if (checkBounds(ix, y) && vBoard->at(ix)->at(y) == EMPTY) {
+		vBoard->at(ix)->at(y) = piece;
 		return true;
 	} else {
 		return false;
@@ -72,7 +95,7 @@ bool Board::setPiece (char x, int y, char piece) {
 
 char Board::getPiece(int x, int y) {
 	if (checkBounds(x, y)) {
-		return board[x][y];
+		return vBoard->at(x)->at(y);
 	} else {
 		return 0;
 	}
@@ -81,7 +104,7 @@ char Board::getPiece(int x, int y) {
 char Board::getPiece(char x, int y) {
 	int ix = toupper(x) - 65;
 	if (checkBounds(ix, y)) {
-		return board[ix][y];
+		return vBoard->at(ix)->at(y);
 	} else {
 		return 0;
 	}
@@ -99,7 +122,7 @@ bool Board::checkBounds(int x, int y)  {
 
 bool Board::isEmpty(int x, int y)  {
 	if (x >= rows || y >= cols) return false;
-	if (board[x][y] == EMPTY) {
+	if (vBoard->at(x)->at(y) == EMPTY) {
 		return true;
 	} else {
 		return false;
@@ -122,7 +145,7 @@ std::vector<Board*>* Board::getSuccessors(char player)  {
 	for (int r = 0; r < 8; r++) {
 		for (int c = 0; c < 8; c++) {
 			if (isEmpty(r, c)) {
-				Board* next = new Board(this);
+				Board* next = new Board(*(this));
 				next->setPiece((int)r, (int)c, player);
 				next->setMove(r + 65, (int)c+1);
 				temp->push_back(next);
@@ -141,14 +164,14 @@ bool Board::isBoardFull() {
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
 			//If there is at least one empty slot then it isn't full
-			if (board[i][j] == EMPTY) return false;
+			if (vBoard->at(i)->at(j) == EMPTY) return false;
 		}
 	}
 	return true;
 }
 
 bool Board::checkHorizontal(int x, int y) {
-	char piece = board[x][y];
+	char piece = vBoard->at(x)->at(y);
 	int start = x - 3;
 	while (start < 0) {
 		start++;
@@ -159,7 +182,7 @@ bool Board::checkHorizontal(int x, int y) {
 	}
 	int count = 0;
 	for (int i = start; i < end; ++i) {
-		if (board[i][y] == piece) {
+		if (vBoard->at(i)->at(y) == piece) {
 			count++;
 		}
 		else {
@@ -173,7 +196,7 @@ bool Board::checkHorizontal(int x, int y) {
 }
 
 bool Board::checkVertical(int x, int y) {
-	char piece = board[x][y];
+	char piece = vBoard->at(x)->at(y);
 	int start = y - 3;
 	while (start < 0) {
 		start++;
@@ -184,7 +207,7 @@ bool Board::checkVertical(int x, int y) {
 	}
 	int count = 0;
 	for (int i = start; i < end; ++i) {
-		if (board[x][i] == piece) {
+		if (vBoard->at(x)->at(i) == piece) {
 			count++;
 		}
 		else {
@@ -201,7 +224,7 @@ float Board::calculateScore() {
 	float score = 0;
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < cols; ++j) {
-			char piece = board[i][j];
+			char piece = vBoard->at(i)->at(j);
 			if (piece == BOT) { //Found the CPU piece
 				//Compute score for the CPU's pieces, add to total
 				score += computePlrScore(piece, i, j);
@@ -235,7 +258,7 @@ float Board::computePlrScore(char plr, int row, int col) {
 	//Horizontal Count
 	if (row < rows - 3) {
 		for (int r = row + 1; r <= row + 3; ++r) {
-			char nextPiece = board[r][col];
+			char nextPiece = vBoard->at(r)->at(col);
 			if (nextPiece == plr || nextPiece == EMPTY) {
 				if (nextPiece == plr) {
 					inARow++;
@@ -256,7 +279,7 @@ float Board::computePlrScore(char plr, int row, int col) {
 	//Vertical Count
 	if (col < cols - 3) {
 		for (int c = col + 1; c <= col + 3; ++c) {
-			char nextPiece = board[row][c];
+			char nextPiece = vBoard->at(row)->at(c);
 			if (nextPiece == plr || nextPiece == EMPTY) {
 				if (nextPiece == plr) {
 					inACol++;
@@ -280,7 +303,7 @@ float Board::computePlrScore(char plr, int row, int col) {
 		//std::cout << "3 IN A ROW\n";
 		//if (row - 1 >= 0) std::cout << board[row - 1][col] << std::endl;
 		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == EMPTY which means that the right side is open
-		if (row - 1 >= 0 && board[row - 1][col] == EMPTY) {
+		if (row - 1 >= 0 && vBoard->at(row-1)->at(col) == EMPTY) {
 			//The player would have to choose between blocking i-1 or i+3 and the bot
 			//could take the other thus making 4 in a row. Bot wins, return a high score
 			score += 10000;
@@ -295,7 +318,7 @@ float Board::computePlrScore(char plr, int row, int col) {
 		//std::cout << "3 IN A COL\n";
 		//if (col - 1 >= 0) std::cout << board[row][col - 1] << std::endl;
 		//inARow will be 3 if i,i+1,and i+2 == 'X' AND i+3 == EMPTY which means that the right side is open
-		if (col - 1 >= 0 && board[row][col - 1] == EMPTY) {
+		if (col - 1 >= 0 && vBoard->at(row)->at(col-1) == EMPTY) {
 			//The player would have to choose between blocking i-1 or i+3 and the bot
 			//could take the other thus making 4 in a row. Bot wins, return a high score
 			score += 10000;
@@ -319,11 +342,11 @@ float Board::computePlrScore(char plr, int row, int col) {
 	return score;
 }
 
-Board::~Board () {
+//Board::~Board () {
 	//if(board != nullptr){
 	//	delete[] board;
 	//}
-}
+//}
 
 std::ostream & operator<<(std::ostream & os, const Board & c) {
 	os << c.print();
