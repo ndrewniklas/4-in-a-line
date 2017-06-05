@@ -52,11 +52,12 @@ float AI::MaxValue(Board* currBoard, float alpha, float beta, int depth)
 	}*/
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			Board temp(*(currBoard));
-			if (temp.isEmpty(i,j)) {
-				temp.setPiece(i, j, 'X');
-				temp.setMyMove(i, j);
-				v = fmax(v, MinValue(&temp, alpha, beta, depth - 1));
+			Board tempB = *(currBoard);
+			Board* temp(&(tempB));
+			if (temp->isEmpty(i,j)) {
+				temp->setPiece(i, j, 'X');
+				temp->setMyMove(i, j);
+				v = fmax(v, MinValue(temp, alpha, beta, depth - 1));
 				if (v >= beta) {
 					currMove = currBoard->getMove();
 					return v;
@@ -97,17 +98,20 @@ float AI::MinValue(Board* currBoard, float alpha, float beta, int depth) {
 	}	*/
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			Board temp(*(currBoard));
-			if (temp.isEmpty(i, j)) {
-				temp.setPiece(i, j, 'O');
-				temp.setMyMove(i, j);
-				v = fmax(v, MinValue(&temp, alpha, beta, depth - 1));
-				if (v >= beta) {
+			Board tempB = *(currBoard);
+			Board* temp(&(tempB));
+			if (temp->isEmpty(i, j)) {
+				temp->setPiece(i, j, 'X');
+				temp->setMyMove(i, j);
+				v = fmin(v, MaxValue(temp, alpha, beta, depth - 1));
+				if (v <= alpha)
+				{
 					currMove = currBoard->getMove();
 					return v;
 				}
-				else {
-					alpha = fmax(alpha, v);
+				else
+				{
+					beta = fmin(beta, v);
 				}
 			}
 		}
