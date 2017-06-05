@@ -20,7 +20,6 @@ private:
 	bool checkHorizontal(int x, int y);
 	bool checkVertical(int x, int y);
 	bool checkBounds(int x, int y);
-	bool isEmpty(int x, int y) ;
 	float computePlrScore(char plr, int row, int col);
 	void setMove(char row, int col);
 	std::vector<int> myMove;
@@ -29,7 +28,8 @@ public:
 	Board ();
 	Board(const Board &other);
 	~Board ();
-
+	void setMyMove(int x, int y);
+	bool isEmpty(int x, int y);
 	std::vector<std::vector<char>> getBoard() const;
 	std::string move = "A1";
 	float myScore;

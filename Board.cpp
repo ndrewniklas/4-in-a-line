@@ -150,7 +150,9 @@ std::vector<Board>* Board::getSuccessors(char player, Board current)  {
 	}
 	return &temp;
 }
-
+void Board::setMyMove(int x, int y) {
+	myMove = { x,y };
+}
 bool Board::isFinished(int depth, float score) {
 	if (depth == 0 || score >= 10000 || score <= -10000 || isBoardFull()) return true;
 	return false;

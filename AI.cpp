@@ -37,8 +37,8 @@ float AI::MaxValue(Board* currBoard, float alpha, float beta, int depth)
 		return evaluate(*(currBoard));
 	}
 	float v = -INFINITY;
-	std::vector<Board>* successors = currBoard->getSuccessors('X', *(currBoard));
-	for (int s = 0; s < successors->size(); s++)
+	//std::vector<Board>* successors = currBoard->getSuccessors('X', *(currBoard));
+	/*for (int s = 0; s < successors->size(); s++)
 	{
 		Board* temp = &successors->at(s);
 		v = fmax(v, MinValue(temp, alpha, beta, depth - 1));
@@ -48,6 +48,23 @@ float AI::MaxValue(Board* currBoard, float alpha, float beta, int depth)
 		}
 		else {
 			alpha = fmax(alpha, v);
+		}
+	}*/
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			Board temp(*(currBoard));
+			if (temp.isEmpty(i,j)) {
+				temp.setPiece(i, j, 'X');
+				temp.setMyMove(i, j);
+				v = fmax(v, MinValue(&temp, alpha, beta, depth - 1));
+				if (v >= beta) {
+					currMove = currBoard->getMove();
+					return v;
+				}
+				else {
+					alpha = fmax(alpha, v);
+				}
+			}
 		}
 	}
 	return v;
@@ -62,7 +79,7 @@ float AI::MinValue(Board* currBoard, float alpha, float beta, int depth) {
 		return evaluate(*(currBoard));
 	}
 	float v = +INFINITY;
-	std::vector<Board>* successors = currBoard->getSuccessors('O', *(currBoard));
+	/*std::vector<Board>* successors = currBoard->getSuccessors('O', *(currBoard));
 
 	for (int s = 0; s < successors->size(); s++) 
 	{
@@ -77,7 +94,24 @@ float AI::MinValue(Board* currBoard, float alpha, float beta, int depth) {
 		{
 			beta = fmin(beta, v);
 		} 
-	}	
+	}	*/
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			Board temp(*(currBoard));
+			if (temp.isEmpty(i, j)) {
+				temp.setPiece(i, j, 'O');
+				temp.setMyMove(i, j);
+				v = fmax(v, MinValue(&temp, alpha, beta, depth - 1));
+				if (v >= beta) {
+					currMove = currBoard->getMove();
+					return v;
+				}
+				else {
+					alpha = fmax(alpha, v);
+				}
+			}
+		}
+	}
 	return v;
 }
 
